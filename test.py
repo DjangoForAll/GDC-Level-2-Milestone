@@ -99,6 +99,15 @@ class SimpleTest(unittest.TestCase):
 
     def test_report(self):
         self.assert_stdout("report", [], "Pending : 3\n1. Task 2 [2]\n2. Task 3 [3]\n3. Test Task 5 [5]\n\nCompleted : 1\n1. Task 10")
+        
+    def test_cascading_priority(self):
+        self.assert_stdout(
+            "add", ["2", "Test Task 2"], 'Added task: "Test Task 2" with priority 2'
+        )
+        tasks = load_tasks_file()
+        self.assertEqual(tasks[2], "Test Task 2")
+        self.assertEqual(tasks[3], "Task 2")
+        self.assertEqual(tasks[4], "Task 3")
 
 reset_files()
 unittest.main()
